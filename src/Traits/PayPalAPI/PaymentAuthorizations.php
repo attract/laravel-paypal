@@ -44,7 +44,7 @@ trait PaymentAuthorizations
 
         $this->options['json'] = [
             'amount' => [
-                'value'         => $amount,
+                'value'         => (string)$amount,
                 'currency_code' => $this->currency,
             ],
             'invoice_id'    => $invoice_id,
@@ -75,7 +75,7 @@ trait PaymentAuthorizations
 
         $this->options['json'] = [
             'amount' => [
-                'value'         => $amount,
+                'value'         => (string)$amount,
                 'currency_code' => $this->currency,
             ],
         ];
