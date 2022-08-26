@@ -263,11 +263,11 @@ trait Invoices
         $this->apiEndPoint = "v2/invoicing/invoices/{$invoice_id}/refunds";
 
         $data = [
-            'refund_date'   => $payment_date,
-            'method'        => $payment_method,
-            'amount'        => [
-                'currency'  => $this->currency,
-                'value'     => $amount,
+            'refund_date' => $payment_date,
+            'method'      => strtoupper($payment_method),
+            'amount'      => [
+                'currency_code' => $this->currency,
+                'value'         => (string)$amount,
             ],
         ];
 
