@@ -88,10 +88,10 @@ trait PayPalHttpClient
     protected function setCurlConstants()
     {
         $constants = [
-            'CURLOPT_SSLVERSION'        => 32,
-            'CURL_SSLVERSION_TLSv1_2'   => 6,
-            'CURLOPT_SSL_VERIFYPEER'    => 64,
-            'CURLOPT_SSLCERT'           => 10025,
+            'CURLOPT_SSLVERSION'      => 32,
+            'CURL_SSLVERSION_TLSv1_2' => 6,
+            'CURLOPT_SSL_VERIFYPEER'  => 64,
+            'CURLOPT_SSLCERT'         => 10025,
         ];
 
         foreach ($constants as $key => $item) {
@@ -176,9 +176,9 @@ trait PayPalHttpClient
     /**
      * Perform PayPal API request & return response.
      *
+     * @return StreamInterface
      * @throws \Throwable
      *
-     * @return StreamInterface
      */
     private function makeHttpRequest(): StreamInterface
     {
@@ -197,9 +197,9 @@ trait PayPalHttpClient
      *
      * @param bool $decode
      *
+     * @return array|StreamInterface|string
      * @throws \Throwable
      *
-     * @return array|StreamInterface|string
      */
     private function doPayPalRequest(bool $decode = true)
     {
@@ -211,7 +211,8 @@ trait PayPalHttpClient
 
             return ($decode === false) ? $response->getContents() : Utils::jsonDecode($response, true);
         } catch (RuntimeException $t) {
-            return ($decode === false) ? $t->getMessage() : Utils::jsonDecode('{"error":"'.$t->getMessage().'"}', true);
+            $message = $t->getMessage();
+            return ($decode === false || substr($message, 0, 2) != '{"') ? $message : Utils::jsonDecode('{"error":' . $message . '}', true);
         }
     }
 }
